@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* Allow local preview hosts used by cloud agents and publish screenshots */
+  allowedDevOrigins: ["127.0.0.1", "localhost"],
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

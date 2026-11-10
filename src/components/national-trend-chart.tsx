@@ -4,22 +4,27 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
-  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import { nationalTrend } from "@/data/population";
+import { useElementSize } from "@/hooks/use-element-size";
 
 function formatAxisPop(value: number) {
   return `${(value / 1_000_000).toFixed(0)}M`;
 }
 
 export function NationalTrendChart() {
+  const { ref, width, height } = useElementSize<HTMLDivElement>();
+  const ready = width > 0 && height > 0;
+
   return (
-    <div className="h-[280px] w-full sm:h-[340px]">
-      <ResponsiveContainer width="100%" height="100%">
+    <div ref={ref} className="h-[280px] w-full sm:h-[340px]">
+      {ready ? (
         <AreaChart
+          width={width}
+          height={height}
           data={nationalTrend}
           margin={{ top: 12, right: 8, left: 0, bottom: 0 }}
         >
@@ -43,7 +48,7 @@ export function NationalTrendChart() {
             axisLine={false}
             width={42}
             tick={{ fill: "#4A635A", fontSize: 12 }}
-            domain={["dataMin - 500000", "dataMax + 400000"]}
+            domain={[19_500_000, 28_000_000]}
           />
           <Tooltip
             contentStyle={{
@@ -71,10 +76,10 @@ export function NationalTrendChart() {
             stroke="#12352C"
             strokeWidth={2.5}
             fill="url(#popFill)"
-            animationDuration={1200}
+            isAnimationActive={false}
           />
         </AreaChart>
-      </ResponsiveContainer>
+      ) : null}
     </div>
   );
 }

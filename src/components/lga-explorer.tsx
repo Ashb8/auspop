@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { formatPopulation, getInsights } from "@/data/population";
 
 type Filter = "All" | "Metro" | "Regional";
@@ -15,22 +14,24 @@ export function LgaExplorer() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap gap-2" role="group" aria-label="Region filter">
-        {(["All", "Metro", "Regional"] as Filter[]).map((option) => (
-          <Button
-            key={option}
-            type="button"
-            size="sm"
-            variant={filter === option ? "default" : "outline"}
-            onClick={() => setFilter(option)}
-            className={
-              filter === option
-                ? "bg-[var(--brand)] text-[var(--brand-foreground)] hover:bg-[var(--brand)]/90"
-                : "border-[var(--line)] bg-white/50 text-[var(--ink)] hover:bg-white"
-            }
-          >
-            {option}
-          </Button>
-        ))}
+        {(["All", "Metro", "Regional"] as Filter[]).map((option) => {
+          const active = filter === option;
+          return (
+            <button
+              key={option}
+              type="button"
+              aria-pressed={active}
+              onClick={() => setFilter(option)}
+              className={
+                active
+                  ? "inline-flex h-8 items-center rounded-lg bg-[var(--brand)] px-3 text-sm font-medium text-[var(--brand-foreground)]"
+                  : "inline-flex h-8 items-center rounded-lg border border-[var(--line)] bg-white/70 px-3 text-sm font-medium text-[var(--ink)] transition hover:bg-white"
+              }
+            >
+              {option}
+            </button>
+          );
+        })}
       </div>
 
       {lgas.length === 0 ? (
@@ -47,14 +48,14 @@ export function LgaExplorer() {
                 {String(index + 1).padStart(2, "0")}
               </span>
               <div className="min-w-0">
-                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="truncate font-medium text-[var(--ink)]">
                     {row.lga}
                   </span>
                   <span className="text-sm text-[var(--muted-ink)]">{row.state}</span>
                   <Badge
                     variant="secondary"
-                    className="bg-[var(--sand)] text-[var(--ink)]"
+                    className="shrink-0 bg-[var(--sand)] text-[var(--ink)]"
                   >
                     {row.region}
                   </Badge>

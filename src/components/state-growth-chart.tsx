@@ -5,22 +5,26 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
-  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import { stateGrowth } from "@/data/population";
+import { useElementSize } from "@/hooks/use-element-size";
 
 const accent = ["#1FA6A0", "#12352C", "#3D7A6B", "#C4A35A", "#5C8F82"];
 
 export function StateGrowthChart() {
+  const { ref, width, height } = useElementSize<HTMLDivElement>();
+  const ready = width > 0 && height > 0;
   const data = [...stateGrowth].sort((a, b) => b.growth202324 - a.growth202324);
 
   return (
-    <div className="h-[300px] w-full sm:h-[360px]">
-      <ResponsiveContainer width="100%" height="100%">
+    <div ref={ref} className="h-[300px] w-full sm:h-[360px]">
+      {ready ? (
         <BarChart
+          width={width}
+          height={height}
           data={data}
           layout="vertical"
           margin={{ top: 8, right: 16, left: 8, bottom: 0 }}
@@ -56,16 +60,17 @@ export function StateGrowthChart() {
               ];
             }}
           />
-          <Bar dataKey="growth202324" radius={[0, 8, 8, 0]} animationDuration={900}>
+          <Bar
+            dataKey="growth202324"
+            radius={[0, 8, 8, 0]}
+            isAnimationActive={false}
+          >
             {data.map((entry, index) => (
-              <Cell
-                key={entry.code}
-                fill={accent[index % accent.length]}
-              />
+              <Cell key={entry.code} fill={accent[index % accent.length]} />
             ))}
           </Bar>
         </BarChart>
-      </ResponsiveContainer>
+      ) : null}
     </div>
   );
 }
