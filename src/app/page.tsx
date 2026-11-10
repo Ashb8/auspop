@@ -18,11 +18,11 @@ export default function Home() {
       <section className="relative isolate min-h-[100svh] overflow-hidden text-white">
         <div
           aria-hidden
-          className="animate-drift absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,#1fa6a0_0%,transparent_42%),radial-gradient(circle_at_80%_10%,#3d7a6b_0%,transparent_35%),linear-gradient(155deg,#0b241e_0%,#12352c_48%,#0f2f28_100%)]"
+          className="animate-drift pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,#1fa6a0_0%,transparent_42%),radial-gradient(circle_at_80%_10%,#3d7a6b_0%,transparent_35%),linear-gradient(155deg,#0b241e_0%,#12352c_48%,#0f2f28_100%)]"
         />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 opacity-35"
+          className="pointer-events-none absolute inset-0 -z-10 opacity-35"
           style={{
             backgroundImage:
               "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
