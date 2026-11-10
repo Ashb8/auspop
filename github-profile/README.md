@@ -19,6 +19,10 @@ Open to **Data Engineer**, **Data Analyst**, and analytics engineering roles acr
 
 ## Featured work
 
+### [auspop](https://github.com/Ashb8/auspop)
+
+Interactive data story of Australia’s post-COVID population rebound: national trend, state growth shares, and a filterable LGA explorer (Next.js + Recharts).
+
 ### [Data-Warehouse-SQL-Project](https://github.com/Ashb8/Data-Warehouse-SQL-Project)
 
 Modern SQL Server warehouse built end-to-end from CRM and ERP CSV sources:
