@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { formatPopulation, getInsights } from "@/data/population";
 
@@ -12,8 +14,14 @@ const FILTERS: { id: Filter; label: string }[] = [
   { id: "Regional", label: "Regional only" },
 ];
 
+function parseFilter(value: string | null): Filter {
+  if (value === "Metro" || value === "Regional" || value === "All") return value;
+  return "All";
+}
+
 export function LgaExplorer() {
-  const [filter, setFilter] = useState<Filter>("All");
+  const searchParams = useSearchParams();
+  const filter = parseFilter(searchParams.get("region"));
   const { lgas } = useMemo(() => getInsights(filter), [filter]);
   const maxGrowth = Math.max(...lgas.map((l) => l.growth202324), 1);
 
@@ -25,37 +33,38 @@ export function LgaExplorer() {
         </p>
         <div
           className="flex flex-wrap gap-2"
-          role="radiogroup"
+          role="navigation"
           aria-label="Filter LGAs by region type"
         >
           {FILTERS.map((option) => {
             const active = filter === option.id;
+            const href =
+              option.id === "All" ? "/#lgas" : `/?region=${option.id}#lgas`;
             return (
-              <label
+              <Link
                 key={option.id}
+                href={href}
+                scroll={false}
                 data-testid={`lga-filter-${option.id.toLowerCase()}`}
+                aria-current={active ? "page" : undefined}
                 className={
                   active
-                    ? "inline-flex cursor-pointer items-center rounded-xl bg-[var(--brand)] px-4 py-2.5 text-sm font-semibold text-[var(--brand-foreground)] shadow-sm"
-                    : "inline-flex cursor-pointer items-center rounded-xl border border-[var(--line)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--ink)] transition hover:border-[var(--brand)]/40 hover:bg-white"
+                    ? "inline-flex min-h-11 min-w-[7.5rem] items-center justify-center rounded-xl bg-[var(--brand)] px-4 py-2.5 text-sm font-semibold text-[var(--brand-foreground)] shadow-sm"
+                    : "inline-flex min-h-11 min-w-[7.5rem] items-center justify-center rounded-xl border border-[var(--line)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--ink)] transition hover:border-[var(--brand)]/40 hover:bg-white"
                 }
               >
-                <input
-                  type="radio"
-                  name="lga-region-filter"
-                  value={option.id}
-                  checked={active}
-                  onChange={() => setFilter(option.id)}
-                  className="sr-only"
-                />
                 {option.label}
-              </label>
+              </Link>
             );
           })}
         </div>
       </div>
 
-      <p className="text-sm text-[var(--muted-ink)]" aria-live="polite">
+      <p
+        data-testid="lga-count"
+        className="text-sm text-[var(--muted-ink)]"
+        aria-live="polite"
+      >
         Showing {lgas.length} LGA{lgas.length === 1 ? "" : "s"}
         {filter === "All" ? "" : ` · ${filter.toLowerCase()}`}
       </p>

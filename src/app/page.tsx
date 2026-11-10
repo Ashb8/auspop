@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { LgaExplorer } from "@/components/lga-explorer";
 import { NationalTrendChart } from "@/components/national-trend-chart";
 import { SiteHeader } from "@/components/site-header";
@@ -7,6 +8,14 @@ import {
   getInsights,
   storyBeats,
 } from "@/data/population";
+
+function LgaExplorerFallback() {
+  return (
+    <div className="space-y-3 text-sm text-[var(--muted-ink)]">
+      Loading LGA explorer…
+    </div>
+  );
+}
 
 export default function Home() {
   const { covid, latest, fastestState, metroShare } = getInsights();
@@ -113,7 +122,9 @@ export default function Home() {
             metro and regional patterns.
           </p>
           <div className="mt-10 rounded-[1.5rem] border border-[var(--line)] bg-white/70 p-4 backdrop-blur-sm sm:p-6">
-            <LgaExplorer />
+            <Suspense fallback={<LgaExplorerFallback />}>
+              <LgaExplorer />
+            </Suspense>
           </div>
         </section>
 
